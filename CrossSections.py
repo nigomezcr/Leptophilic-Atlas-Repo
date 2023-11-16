@@ -2,9 +2,16 @@ import  numpy as np
 from scipy.integrate import quad
 from Constants import c, fc, GeVtocm2
 
+# Defult values of nice-working example
+gp = 0.6
+mZp = 0.02
+mDM = 1
+
+
 """
 ///////////// Annihilation Cross Sections  ///////////////
 """
+
 
 #Annihilation cross-section to leptons
 def sigma_to_LL(s, g, M, m):
@@ -29,8 +36,8 @@ def sigmaV_to_ZZ(gDM, mDM, M):
     return term1 * term2 * term3
 
 # Approximated Thermal Cross section to Z's
-def sigmaV_to_ZZ_Approx(gDM, mDM, M):
-    term1 = gDM**4/(16*np.pi*mDM**2)
+def sigmaV_to_ZZ_Approx(g, m, M):
+    term1 = g**4/(16*np.pi*m**2)
     return term1
 
 #Non relativistic thermal cross-section to neutrinos
@@ -66,8 +73,40 @@ def total_sigma_attractive(v, g, M, m):
 
     return fc*( sigma_s + sigma_t + sigma_st)
 
-def total_sigma(v, g,M,m):
+def total_sigma(v, g=gp, M=mZp ,m=mDM ):
     return (total_sigma_attractive(v, g, M, m) + total_sigma_repulsive(v, g, M, m))/2
+
+
+
+def Transfer_sigma_repulsive(v, g=gp, M=mZp ,m=mDM ):
+    Beta =  v /(2)
+    s = 4 * m**2 / (1 - Beta**2)
+    sigma0 = -g**4/(4*np.pi*s**3*Beta**4)
+
+    t_chn = -((s * Beta**2 * (-16 * m**4 - 6 * M**4 + 16 * m**2 * s - M**2 * s * (8 + 3 * Beta**2) + s**2 * (-4 - 4 * Beta**2 + Beta**4))) / (2 * (M**2 + s * Beta**2)))
+    t_chn_log = - (8 * m**4 + 3 * M**4 - 8 * m**2 * s + 4 * M**2 * s + 2 * s**2)
+    TR_t = t_chn + t_chn_log*np.log(1 + s*Beta**2/M**2)
+    
+    u_chn = -((s * Beta**2 * (48 * m**4 + 6 * M**4 + 9 * M**2 * s * Beta**2 + 2 * s**2 * (1 + Beta**4) + 16 * m**2 * (2 * M**2 + s * (-1 + Beta**2)))) / (2 * M**2))
+    u_chn_log = (24 * m**4 + s**2 + 3 * (M**2 + s * Beta**2)**2 + 8 * m**2 * (2 * M**2 + s * (-1 + 2 * Beta**2)) )
+    TR_u = u_chn + u_chn_log*np.log(1 + s*Beta**2/M**2)
+    
+    tu_chn =  (s * Beta**2) / (2 * M**2 + s * Beta**2) * (12 * m**4 - 8 * m**2 * s + s**2)
+    TR_tu = tu_chn*np.log(1 + s*Beta**2/M**2)
+
+
+    return fc* sigma0 * ( TR_t  + TR_u - 2*TR_tu  ) / m
+
+def Transfer_sigma_attractive(v, g=gp, M=mZp ,m=mDM ):
+    Beta =  v /(2)
+    s = 4 * m**2 / (1 - Beta**2)
+    sigma0 = -g**4/(4*np.pi*s**3*Beta**4)
+
+    t_chn = -((s * Beta**2 * (-16 * m**4 - 6 * M**4 + 16 * m**2 * s - M**2 * s * (8 + 3 * Beta**2) + s**2 * (-4 - 4 * Beta**2 + Beta**4))) / (2 * (M**2 + s * Beta**2)))
+    t_chn_log = - (8 * m**4 + 3 * M**4 - 8 * m**2 * s + 4 * M**2 * s + 2 * s**2)
+    TR_t = t_chn + t_chn_log*np.log(1 + s*Beta**2/M**2)
+    
+    s_chn = 1
 
 
 """
