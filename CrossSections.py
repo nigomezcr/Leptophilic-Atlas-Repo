@@ -77,6 +77,11 @@ def total_sigma(v, g=gp, M=mZp ,m=mDM ):
     return (total_sigma_attractive(v, g, M, m) + total_sigma_repulsive(v, g, M, m))/2
 
 
+def Transfer_Sigma_Low_Energy(v, g=gp, M=mZp, m=mDM):
+    R = m*v/M
+    alph = g**2/(4*np.pi)
+    return fc*8*np.pi*alph**2/(m**3 * v**4) * (np.log(1 + R**2) - R**2/(1 + R**2) )
+
 
 def Transfer_sigma_repulsive(v, g=gp, M=mZp ,m=mDM ):
     Beta =  v /(2)
@@ -104,10 +109,19 @@ def Transfer_sigma_attractive(v, g=gp, M=mZp ,m=mDM ):
 
     t_chn = -((s * Beta**2 * (-16 * m**4 - 6 * M**4 + 16 * m**2 * s - M**2 * s * (8 + 3 * Beta**2) + s**2 * (-4 - 4 * Beta**2 + Beta**4))) / (2 * (M**2 + s * Beta**2)))
     t_chn_log = - (8 * m**4 + 3 * M**4 - 8 * m**2 * s + 4 * M**2 * s + 2 * s**2)
-    TR_t = t_chn + t_chn_log*np.log(1 + s*Beta**2/M**2)
+    TA_t = t_chn + t_chn_log*np.log(1 + s*Beta**2/M**2)
     
-    s_chn = 1
+    TA_s = -s**2 * Beta**4 * (24 * m**4 + 4 * m**2 * s * Beta**2 + s**2 * (3 - 2 * Beta**2)) / (6 * (M**2 - s)**2)
 
+    ts_chn = - s*Beta**2 * (-24*m**4 + 6*(M**2 + s)**2 - 3*s*Beta**2*(2*s + M**2) + 2*s**2*Beta**4)/(6*(s-M**2))
+    ts_chn_log = M**2 * ((s + M**2)**2 - 4*m**4)/(s-M**2)
+    TA_st = ts_chn + ts_chn_log*np.log(1 + s*Beta**2/M**2)
+
+    return fc* sigma0 * (TA_t + TA_s+ TA_st)/m
+
+
+def Transfer_sigma(v, g=gp, M=mZp ,m=mDM ):
+    return (Transfer_sigma_repulsive(v, g, M, m) + Transfer_sigma_attractive(v, g, M, m))/2
 
 """
 ///////////// Scattering Cross Sections Computed Numerically  ///////////////
