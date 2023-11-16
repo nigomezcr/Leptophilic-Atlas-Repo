@@ -1,16 +1,16 @@
 # Output data Fig. 7. Correa (2021), MNRAS, 503, 1, 2021
 # Columns: 
-# (1)Galaxy Name, 
-# (2) Collision Velocity, 
-# (3-4) Collision Velocity 16-84th percentiles, 
-# (5) Velocity-weighted Cross section per unit mass
-# (6-7) Velocity-weighted Cross section range 
-UM 30.85 30.37 31.31 1388.43 1234.16 1542.70
-Draco 56.42 55.42 57.23 1410.69 1128.55 1692.83
-Carina 48.40 47.71 49.19 1694.02 1210.01 2178.03
-LeoII 21.01 20.69 21.28 2521.56 1891.17 3151.95
-Sextans 32.30 31.88 32.78 3069.29 2261.58 3877.01
-CVnI 38.18 37.87 38.35  2481.93 1909.18 3054.69
-Sculptor 62.73 61.72 64.12 2195.61 1881.95 2509.27
-Fornax 57.80 56.89 58.49 2312.16 1734.12 2890.21
-LeoI 58.08 57.71 58.35 3485.10 2904.25 4065.95
+# (7)Galaxy Name, 
+# (1) Collision Velocity, 
+# (2-3) Collision Velocity 16-84th percentiles, 
+# (4) Velocity-weighted Cross section per unit mass
+# (5-6) Velocity-weighted Cross section range 
+30.85 30.37 31.31 1388.43 1234.16 1542.70 #UM
+56.42 55.42 57.23 1410.69 1128.55 1692.83 #Draco
+48.40 47.71 49.19 1694.02 1210.01 2178.03 #Carina
+21.01 20.69 21.28 2521.56 1891.17 3151.95 #LeoII
+32.30 31.88 32.78 3069.29 2261.58 3877.01 #Sextans
+38.18 37.87 38.35  2481.93 1909.18 3054.69 # CVnI
+62.73 61.72 64.12 2195.61 1881.95 2509.27 # Sculptor
+57.80 56.89 58.49 2312.16 1734.12 2890.21 #Fornax
+58.08 57.71 58.35 3485.10 2904.25 4065.95 #LeoI
