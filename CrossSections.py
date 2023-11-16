@@ -46,7 +46,7 @@ def sigvNR(g, M, m):
 
 #### Total cross section, analitical #####
 #  Particle-Particle: chi chi -> chi chi
-def sigma_r(v, g, M, m):
+def total_sigma_repulsive(v, g, M, m):
     d = 4 #Dirac
     s = 4*m**2/(1 - v**2)
     Prefactor = (2*g**4/(d*np.pi*s*m))
@@ -56,7 +56,7 @@ def sigma_r(v, g, M, m):
 
 
 # Particle-Antiparticle: chi chibar -> chi chibar
-def sigma_a(v, g, M, m):
+def total_sigma_attractive(v, g, M, m):
     d = 4 #Dirac
     s = 4*m**2/(1 - v**2)
     Prefactor = g**4/(d*np.pi*s*m)
@@ -66,10 +66,13 @@ def sigma_a(v, g, M, m):
 
     return fc*( sigma_s + sigma_t + sigma_st)
 
-def sigma_eff(v, g,M,m):
-    v = v/c
-    return (sigma_a(2*v, g, M, m) + sigma_r(2*v, g, M, m))/2
+def total_sigma(v, g,M,m):
+    return (total_sigma_attractive(v, g, M, m) + total_sigma_repulsive(v, g, M, m))/2
 
+
+"""
+///////////// Scattering Cross Sections Computed Numerically  ///////////////
+"""
 
 #### Total cross section, numerical #####
 # t channel
@@ -195,37 +198,15 @@ def sigmaT_Num(v, g, M, m):
 
 
 
-#### Analytical cross section #####
+"""
+///////////// Velocity Weighted Cross sections  ///////////////
+"""
 
-#  Particle-Particle: chi chi -> chi chi
-def sigma_r(v, g, M, m):
-    d = 4 #Dirac
-    s = 4*m**2/(1 - v**2)
-    Prefactor = (2*g**4/(d*np.pi*s*m))
-    Term1 = ((2*s + 3*M**2)*s*v**2 + 2*(M**2 + 2*m**2)**2)/(2*M**2*(M**2 + s*v**2))
-    LogTerm1 = -(s*v**2*(3*M**2 + 4*m**2) + 2*(M**2 + 2*m**2)**2 - 4*m**4)/(s*v**2*(2*M**2 + s*v**2))
-    return  fc*Prefactor*(Term1 + LogTerm1*np.log(1 + s*v**2/M**2) )
-
-
-# Particle-Antiparticle: chi chibar -> chi chibar
-def sigma_a(v, g, M, m):
-    d = 4 #Dirac
-    s = 4*m**2/(1 - v**2)
-    Prefactor = g**4/(d*np.pi*s*m)
-    sigma_t = Prefactor*( (s*v**2*(2*s + 3*M**2)+2*(M**2 + 2*m**2)**2)/(2*M**2*(M**2+s*v**2)) - (M**2 + s)/(s*v**2)*np.log(1 + s*v**2/M**2) )
-    sigma_s = Prefactor/3*( (12*m**4 + 6*(v**2 + 1)*s*m**2 + s**2*v**4 ) / (s - M**2)**2 )
-    sigma_st = -Prefactor/2*( (16*m**2+2*M**2+ 3*s*v**2)/(s-M**2) - (4*m**2 + 2*m**2*(4*M**2+3*s*v**2+s ) + (M**2+s*v**2)**2 )/(s*v**2*(s-M**2))*np.log(1 + s*v**2/M**2) )
-
-    return fc*( sigma_s + sigma_t + sigma_st)
-
-def sigma_eff(v, g,M,m):
-    v = v/c
-    return (sigma_a(2*v, g, M, m) + sigma_r(2*v, g, M, m))/2
 
 
 # Ensemble average cross section
 def sigv_integrand(v, v0, g, M, m):
-    return sigma_eff(v, g, M, m)*v*np.exp(-0.5*v**2/v0**2)*v**2
+    return total_sigma(v, g, M, m)*v*np.exp(-0.5*v**2/v0**2)*v**2
 
 
 def sigv_T(v0, g, M, m):
