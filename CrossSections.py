@@ -2,7 +2,6 @@ import  numpy as np
 from scipy.integrate import quad
 from Constants import c, fc, GeVtocm2
 
-
 """
 ///////////// Annihilation Cross Sections  ///////////////
 """
@@ -41,7 +40,7 @@ def sigvNR(g, M, m):
 
 
 """
-///////////// Scattering Cross Sections Computed  ///////////////
+///////////// Scattering Cross Sections Computed Analytically  ///////////////
 """
 
 
