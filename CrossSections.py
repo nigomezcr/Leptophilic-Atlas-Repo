@@ -269,3 +269,16 @@ def sigv_T(v0, g, M, m):
     Prefactor = 4*np.pi/((2*np.pi*v0**2)**1.5 * m)
     Integral = quad(sigv_integrand, 0.1, vmax, args=(v0, g, M, m))[0]
     return Prefactor*Integral
+
+# Ensemble average cross section for Transfer in low energy
+def sigv_integrand_low(v, v0, g, M, m):
+    return Transfer_Sigma_Low_Energy(v, g, M, m)*v*np.exp(-0.5*v**2/v0**2)*v**2
+
+
+def Transfer_Sigmav_Low_Energy(v0, g, M, m):
+    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
+    vmax = 2*np.sqrt(sigma2_MB)
+
+    Prefactor = 4*np.pi/((2*np.pi*v0**2)**1.5 * m)
+    Integral = quad(sigv_integrand_low, 0.1, vmax, args=(v0, g, M, m))[0]
+    return Prefactor*Integral
