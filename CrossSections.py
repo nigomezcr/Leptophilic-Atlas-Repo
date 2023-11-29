@@ -100,7 +100,7 @@ def Transfer_sigma_repulsive(v, g=gp, M=mZp ,m=mDM ):
     TR_tu = tu_chn*np.log(1 + s*Beta**2/M**2)
 
 
-    return fc* sigma0 * ( TR_t  + TR_u - 2*TR_tu  ) / m
+    return fc* sigma0 /m  * ( TR_t  + TR_u - 2*TR_tu  ) 
 
 def Transfer_sigma_attractive(v, g=gp, M=mZp ,m=mDM ):
     Beta =  v /(2)
@@ -117,7 +117,7 @@ def Transfer_sigma_attractive(v, g=gp, M=mZp ,m=mDM ):
     ts_chn_log = M**2 * ((s + M**2)**2 - 4*m**4)/(s-M**2)
     TA_st = ts_chn + ts_chn_log*np.log(1 + s*Beta**2/M**2)
 
-    return fc* sigma0 * (TA_t + TA_s+ TA_st)/m
+    return fc* sigma0 / m  * (TA_t + TA_s+ TA_st)
 
 
 def Transfer_sigma(v, g=gp, M=mZp ,m=mDM ):
@@ -145,14 +145,15 @@ def sigv_T(v0, g, M, m):
 
 
 def Transfer_SigV_integrand(v, v0, g, M, m):
-    return total_sigma(v, g, M, m)*v*np.exp(-0.5*v**2/v0**2)*v**2
+    return total_sigma(v, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
 
 
 def Transfer_SigmaV(v0, g=gp, M=mZp, m=mDM):
+    v0= v0/c
     sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
     vmax = 2*np.sqrt(sigma2_MB)
 
-    Prefactor = 4*np.pi/((2*np.pi*v0**2)**1.5 * m)
+    Prefactor = 4*np.pi/((2*np.pi)**1.5 * m)
     Integral = quad(Transfer_SigV_integrand, 0.1, vmax, args=(v0, g, M, m))[0]
     return Prefactor*Integral
 
