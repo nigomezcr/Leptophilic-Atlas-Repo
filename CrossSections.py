@@ -78,9 +78,17 @@ def total_sigma(v, g=gp, M=mZp ,m=mDM ):
 
 
 def Transfer_Sigma_Low_Energy(v, g=gp, M=mZp, m=mDM):
+    v = v/c
     R = m*v/M
     alph = g**2/(4*np.pi)
     return fc*8*np.pi*alph**2/(m**3 * v**4) * (np.log(1 + R**2) - R**2/(1 + R**2) )
+
+
+def Normalized_Transer(v,  g=gp, M=1000*mZp, m=mDM):
+    alpha = g**2/(4*np.pi)
+    w = 300*(M/10)*(10/m)
+    sigma0T = 137.86*(alpha/0.01)**2*(m/10)*(10/M)**4
+    return sigma0T*4*w**4/v**4 * (np.log(1 + v**2/(w**2)) - (v/w)**2/(1 + (v/w)**2) )
 
 
 def Transfer_sigma_repulsive(v, g=gp, M=mZp ,m=mDM ):
@@ -100,7 +108,7 @@ def Transfer_sigma_repulsive(v, g=gp, M=mZp ,m=mDM ):
     TR_tu = tu_chn*np.log(1 + s*Beta**2/M**2)
 
 
-    return fc* sigma0 /m  * ( TR_t  + TR_u - 2*TR_tu  ) 
+    return fc* sigma0 /m  * ( TR_t )# + TR_u - 2*TR_tu  ) 
 
 def Transfer_sigma_attractive(v, g=gp, M=mZp ,m=mDM ):
     Beta =  v /(2)
@@ -117,7 +125,7 @@ def Transfer_sigma_attractive(v, g=gp, M=mZp ,m=mDM ):
     ts_chn_log = M**2 * ((s + M**2)**2 - 4*m**4)/(s-M**2)
     TA_st = ts_chn + ts_chn_log*np.log(1 + s*Beta**2/M**2)
 
-    return fc* sigma0 / m  * (TA_t + TA_s+ TA_st)
+    return fc* sigma0 / m  * (TA_t )# + TA_s+ TA_st)
 
 
 def Transfer_sigma(v, g=gp, M=mZp ,m=mDM ):
@@ -127,6 +135,18 @@ def Transfer_sigma(v, g=gp, M=mZp ,m=mDM ):
 """
 ///////////// Velocity Weighted Cross sections  ///////////////
 """
+
+def Integrand_Normalized_SigmaV(v, g, v0, M, m):
+    return Normalized_Transer(v, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
+
+
+def Normalized_SigmaV(v0, g=gp, M=1000*mZp ,m=mDM ):
+    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
+    vmax = 2*np.sqrt(sigma2_MB)
+
+    Prefactor = 4*np.pi/((2*np.pi)**1.5 * m)
+    Integral = quad(Integrand_Normalized_SigmaV, 0.0, vmax, args=(v0, g, M, m))[0]
+    return Prefactor*Integral
 
 
 
