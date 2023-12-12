@@ -151,37 +151,73 @@ def Transfer_Sigmav_Low_Energy(v0, g=gp, M=mZp, m=mDM):
     return Prefactor*Integral
 
 
-# Normalized Standard Transfer Cross Section Wighter
-def Integrand_Normalized_SigmaV(v, g, v0, M, m):
-    return Normalized_Transer(v, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
 
-
-def Normalized_SigmaV(v0, g=gp, M=mZp, m=mDM ):
-
-    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
-    vmax = 2*np.sqrt(sigma2_MB)
-
-    Prefactor = 4*np.pi/((2*np.pi)**1.5 )
-    Integral = quad(Integrand_Normalized_SigmaV, 0.0, vmax, args=(v0, g, M, m))[0]
-    
-    return Prefactor*Integral
 
 # PP Transfer Cross Section
 
-def Transfer_SigV_integrand(v, v0, g, M, m):
-    return Transfer_sigma(v, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
+def Normalized_SigmaV(v0, g, M, m):
+    alpha = g**2/(4*np.pi)
+    w = 300*(M/10)*(10/m)
 
 
-def Transfer_SigmaV(v0, g=gp, M=mZp, m=mDM):
+    sigma0T = 137.86*(alpha/0.01)**2*(m/10)*(10/M)**4
+    sigmaT = lambda v: 4*w**4/v**4 * (np.log(1 + v**2/(w**2)) - (v/w)**2/(1 + (v/w)**2) )
+
+    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
+    vmax = 2*np.sqrt(sigma2_MB)
+    integrand = lambda v: sigmaT(v)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
+
+
+    Prefactor = 4*np.pi*sigma0T/((2*np.pi)**1.5 )
+    Integral = Prefactor*quad(integrand, 0.0, vmax)[0]
+
+    
+    return Integral
+
+
+
+def Transfer_SigmaV(v0, g, M, m):
+    M = M/1000
+    Beta = v0/(2*c)
+    s = 4 * m**2 / (1 - Beta**2)
+    sigma0 = -g**4/(4*np.pi*s**3*Beta**4)
+    
+    # Attractive
+    t_chn = -((s * Beta**2 * (-16 * m**4 - 6 * M**4 + 16 * m**2 * s - M**2 * s * (8 + 3 * Beta**2) + s**2 * (-4 - 4 * Beta**2 + Beta**4))) / (2 * (M**2 + s * Beta**2)))
+    t_chn_log = - (8 * m**4 + 3 * M**4 - 8 * m**2 * s + 4 * M**2 * s + 2 * s**2)
+    TR_t = t_chn + t_chn_log*np.log(1 + s*Beta**2/M**2)
+    
+    TA_s = -s**2 * Beta**4 * (24 * m**4 + 4 * m**2 * s * Beta**2 + s**2 * (3 - 2 * Beta**2)) / (6 * (M**2 - s)**2)
+
+    ts_chn = - s*Beta**2 * (-24*m**4 + 6*(M**2 + s)**2 - 3*s*Beta**2*(2*s + M**2) + 2*s**2*Beta**4)/(6*(s-M**2))
+    ts_chn_log = M**2 * ((s + M**2)**2 - 4*m**4)/(s-M**2)
+    TA_st = ts_chn + ts_chn_log*np.log(1 + s*Beta**2/M**2)
+
+    Transfer_sigma_attractive =  sigma0 / m  * (TR_t  + TA_s+ TA_st)
+
+    # Repulsive
+    u_chn = -((s * Beta**2 * (48 * m**4 + 6 * M**4 + 9 * M**2 * s * Beta**2 + 2 * s**2 * (1 + Beta**4) + 16 * m**2 * (2 * M**2 + s * (-1 + Beta**2)))) / (2 * M**2))
+    u_chn_log = (24 * m**4 + s**2 + 3 * (M**2 + s * Beta**2)**2 + 8 * m**2 * (2 * M**2 + s * (-1 + 2 * Beta**2)) )
+    TR_u = u_chn + u_chn_log*np.log(1 + s*Beta**2/M**2)
+    
+    tu_chn =  (s * Beta**2) / (2 * M**2 + s * Beta**2) * (12 * m**4 - 8 * m**2 * s + s**2)
+    TR_tu = tu_chn*np.log(1 + s*Beta**2/M**2)
+
+    Transfer_sigma_repulsive =  sigma0 / m  * ( TR_t  + TR_u - 2*TR_tu  ) 
+
+    
+    Transfer_sigma =  (Transfer_sigma_repulsive + Transfer_sigma_attractive)/2
+
+    Integrand = lambda v: Transfer_sigma*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
+
 
     sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
     vmax = 2*np.sqrt(sigma2_MB)
 
     Prefactor = 4*np.pi/((2*np.pi)**1.5 )
-    Integral = quad(Transfer_SigV_integrand, 0.0, vmax, args=(v0, g, M, m))[0]
-    return Prefactor*Integral
+    Integral = quad(Integrand, 0.0, vmax)[0]
+    return fc* Prefactor*Integral
 
-   
 
 # Total Cross Section Weighted
 def sigv_integrand(v, v0, g, M, m):
