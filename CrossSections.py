@@ -78,13 +78,12 @@ def total_sigma(v, g=gp, M=mZp ,m=mDM ):
 
 
 def Transfer_Sigma_Low_Energy(v, g=gp, M=mZp, m=mDM):
-    v = v/c
     R = m*v/M
     alph = g**2/(4*np.pi)
     return fc*8*np.pi*alph**2/(m**3 * v**4) * (np.log(1 + R**2) - R**2/(1 + R**2) )
 
 
-def Normalized_Transer(v,  g=gp, M=1000*mZp, m=mDM):
+def Normalized_Transer(v,  g=gp, M=mZp, m=mDM):
     alpha = g**2/(4*np.pi)
     w = 300*(M/10)*(10/m)
     sigma0T = 137.86*(alpha/0.01)**2*(m/10)*(10/M)**4
@@ -136,21 +135,55 @@ def Transfer_sigma(v, g=gp, M=mZp ,m=mDM ):
 ///////////// Velocity Weighted Cross sections  ///////////////
 """
 
+# Standard Transfer Cross Section Wighter
+
+def sigv_integrand_low(v, v0, g, M, m):
+    return Transfer_Sigma_Low_Energy(v/c, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
+
+
+def Transfer_Sigmav_Low_Energy(v0, g=gp, M=mZp, m=mDM):
+    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
+    vmax = 2*np.sqrt(sigma2_MB)
+
+    Prefactor = 4*np.pi/((2*np.pi)**1.5)
+    Integral = quad(sigv_integrand_low, 0.0, vmax, args=(v0, g, M, m))[0]
+    
+    return Prefactor*Integral
+
+
+# Normalized Standard Transfer Cross Section Wighter
 def Integrand_Normalized_SigmaV(v, g, v0, M, m):
     return Normalized_Transer(v, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
 
 
-def Normalized_SigmaV(v0, g=gp, M=1000*mZp ,m=mDM ):
+def Normalized_SigmaV(v0, g=gp, M=mZp, m=mDM ):
+
     sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
     vmax = 2*np.sqrt(sigma2_MB)
 
-    Prefactor = 4*np.pi/((2*np.pi)**1.5 * m)
+    Prefactor = 4*np.pi/((2*np.pi)**1.5 )
     Integral = quad(Integrand_Normalized_SigmaV, 0.0, vmax, args=(v0, g, M, m))[0]
+    
     return Prefactor*Integral
 
+# PP Transfer Cross Section
+
+def Transfer_SigV_integrand(v, v0, g, M, m):
+    return Transfer_sigma(v, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
 
 
-# Ensemble average cross section
+def Transfer_SigmaV(v0, g=gp, M=mZp, m=mDM):
+
+    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
+    vmax = 2*np.sqrt(sigma2_MB)
+
+    Prefactor = 4*np.pi/((2*np.pi)**1.5 )
+    Integral = quad(Transfer_SigV_integrand, 0.0, vmax, args=(v0, g, M, m))[0]
+    return Prefactor*Integral
+
+   
+
+# Total Cross Section Weighted
 def sigv_integrand(v, v0, g, M, m):
     return total_sigma(v, g, M, m)*v*np.exp(-0.5*v**2/v0**2)*v**2
 
@@ -164,28 +197,4 @@ def sigv_T(v0, g, M, m):
     return Prefactor*Integral
 
 
-def Transfer_SigV_integrand(v, v0, g, M, m):
-    return total_sigma(v, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
 
-
-def Transfer_SigmaV(v0, g=gp, M=mZp, m=mDM):
-    v0= v0/c
-    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
-    vmax = 2*np.sqrt(sigma2_MB)
-
-    Prefactor = 4*np.pi/((2*np.pi)**1.5 * m)
-    Integral = quad(Transfer_SigV_integrand, 0.1, vmax, args=(v0, g, M, m))[0]
-    return Prefactor*Integral
-
-
-def sigv_integrand_low(v, v0, g, M, m):
-    return Transfer_Sigma_Low_Energy(v, g, M, m)*v*np.exp(-0.5*v**2/v0**2)*v**2
-
-
-def Transfer_Sigmav_Low_Energy(v0, g=gp, M=mZp, m=mDM):
-    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
-    vmax = 2*np.sqrt(sigma2_MB)
-
-    Prefactor = 4*np.pi/((2*np.pi*v0**2)**1.5 * m)
-    Integral = quad(sigv_integrand_low, 0.1, vmax, args=(v0, g, M, m))[0]
-    return Prefactor*Integral
