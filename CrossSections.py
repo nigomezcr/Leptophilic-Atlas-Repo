@@ -4,8 +4,8 @@ from Constants import c, fc, GeVtocm2
 
 # Defult values of nice-working example
 gp = 0.6
-mZp = 0.02
-mDM = 1
+mZp = 20 # in MeV
+mDM = 1 # in GeV
 
 
 """
@@ -153,9 +153,9 @@ def Transfer_Sigmav_Low_Energy(v0, g=gp, M=mZp, m=mDM):
 
 
 
-# PP Transfer Cross Section
+# Normalized cross section
 
-def Normalized_SigmaV(v0, g, M, m):
+def Normalized_SigmaV(v0, g=gp, M=mZp, m=mDM):
     alpha = g**2/(4*np.pi)
     w = 300*(M/10)*(10/m)
 
@@ -175,8 +175,9 @@ def Normalized_SigmaV(v0, g, M, m):
     return Integral
 
 
+# PP Transfer Cross Section
 
-def Transfer_SigmaV(v0, g, M, m):
+def Transfer_SigmaV(v0, g=gp, M=mZp, m=mDM):
     M = M/1000
     Beta = v0/(2*c)
     s = 4 * m**2 / (1 - Beta**2)
