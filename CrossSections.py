@@ -77,11 +77,6 @@ def total_sigma(v, g=gp, M=mZp ,m=mDM ):
     return (total_sigma_attractive(v, g, M, m) + total_sigma_repulsive(v, g, M, m))/2
 
 
-def Transfer_Sigma_Low_Energy(v, g=gp, M=mZp, m=mDM):
-    R = m*v/M
-    alph = g**2/(4*np.pi)
-    return fc*8*np.pi*alph**2/(m**3 * v**4) * (np.log(1 + R**2) - R**2/(1 + R**2) )
-
 
 def Normalized_Transer(v,  g=gp, M=mZp, m=mDM):
     alpha = g**2/(4*np.pi)
@@ -128,6 +123,7 @@ def Transfer_sigma_attractive(v, g=gp, M=mZp ,m=mDM ):
 
 
 def Transfer_sigma(v, g=gp, M=mZp ,m=mDM ):
+    M = M/1000
     return (Transfer_sigma_repulsive(v/c, g, M, m) + Transfer_sigma_attractive(v/c, g, M, m))/2
 
 
