@@ -36,7 +36,7 @@ def sigmaV_to_ZZ(gDM, mDM, M):
     return term1 * term2 * term3
 
 # Approximated Thermal Cross section to Z's
-def sigmaV_to_ZZ_Approx(g, m, M):
+def sigmaV_to_ZZ_Approx(g, m):
     term1 = g**4/(16*np.pi*m**2)
     return term1
 
