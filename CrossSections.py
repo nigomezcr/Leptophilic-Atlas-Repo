@@ -41,9 +41,9 @@ def sigmaV_to_ZZ_Approx(g, m):
     return term1
 
 #Non relativistic thermal cross-section to neutrinos
-def sigvNR(g, M, m):
-    Qc = 1
-    return (Qc**4*g**4/np.pi)*(m**2/(4*m**2 - M**2)**2)
+#def sigvNR(g, M, m):
+#    Qc = 1
+#    return (Qc**4*g**4/np.pi)*(m**2/(4*m**2 - M**2)**2)
 
 
 """
@@ -131,23 +131,6 @@ def Transfer_sigma(v, g=gp, M=mZp ,m=mDM ):
 ///////////// Velocity Weighted Cross sections  ///////////////
 """
 
-# Standard Transfer Cross Section Wighter
-
-def sigv_integrand_low(v, v0, g, M, m):
-    return Transfer_Sigma_Low_Energy(v/c, g, M, m)*(v/v0)*np.exp(-0.5*v**2/v0**2)*(v/v0)**2
-
-
-def Transfer_Sigmav_Low_Energy(v0, g=gp, M=mZp, m=mDM):
-    sigma2_MB = v0**2*np.pi*(3*np.pi - 8)/np.pi
-    vmax = 2*np.sqrt(sigma2_MB)
-
-    Prefactor = 4*np.pi/((2*np.pi)**1.5)
-    Integral = quad(sigv_integrand_low, 0.0, vmax, args=(v0, g, M, m))[0]
-    
-    return Prefactor*Integral
-
-
-
 
 # Normalized cross section
 
@@ -190,7 +173,7 @@ def Transfer_SigmaV(v0, g=gp, M=mZp, m=mDM):
     ts_chn_log = M**2 * ((s + M**2)**2 - 4*m**4)/(s-M**2)
     TA_st = ts_chn + ts_chn_log*np.log(1 + s*Beta**2/M**2)
 
-    Transfer_sigma_attractive =  sigma0 / m  * (TR_t  + TA_s+ TA_st)
+    Transfer_sigma_attractive =  sigma0 / m  * (TR_t )# + TA_s+ TA_st)
 
     # Repulsive
     u_chn = -((s * Beta**2 * (48 * m**4 + 6 * M**4 + 9 * M**2 * s * Beta**2 + 2 * s**2 * (1 + Beta**4) + 16 * m**2 * (2 * M**2 + s * (-1 + Beta**2)))) / (2 * M**2))
@@ -200,7 +183,7 @@ def Transfer_SigmaV(v0, g=gp, M=mZp, m=mDM):
     tu_chn =  (s * Beta**2) / (2 * M**2 + s * Beta**2) * (12 * m**4 - 8 * m**2 * s + s**2)
     TR_tu = tu_chn*np.log(1 + s*Beta**2/M**2)
 
-    Transfer_sigma_repulsive =  sigma0 / m  * ( TR_t  + TR_u - 2*TR_tu  ) 
+    Transfer_sigma_repulsive =  sigma0 / m  * ( TR_t )# + TR_u - 2*TR_tu  ) 
 
     
     Transfer_sigma =  (Transfer_sigma_repulsive + Transfer_sigma_attractive)/2
