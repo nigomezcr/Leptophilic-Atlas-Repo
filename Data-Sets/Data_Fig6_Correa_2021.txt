@@ -5,7 +5,7 @@
 # (3-4) Collision Velocity 16-84th percentiles, 
 # (5) Cross section per unit mass
 # (6-7) Cross section range (see also Table 2 in Correa 2021)
-30.85 30.37 31.31 45.0 40.0 50.0 # UM
+# 30.85 30.37 31.31 45.0 40.0 50.0 # UM
 56.42 55.42 57.23 25.0 20.0 30.0 # Draco
 48.40 47.71 49.19 35.0 25.0 45.0 # Carina
 21.01 20.69 21.28 120.0 90.0 150.0 # LeoII
