@@ -144,6 +144,12 @@ def plot_Atlas(mass_arr, g_arr, color='k', lsty='solid', lab=None):
     plt.savefig("Plots/g_minus_2-1.pdf")
 
 
+def PrintContributions():
+    print("The Contribution for the charged fermions anomalous magnetic moment:\n")
+    print("$(g-2)_{e}$=\t")
+    print("$(g-2)_{\mu}$=\t")
+    print("$(g-2)_{\tau}$=\t")
+
 """
 /////////// Generate Plots ///////////////////////////////////
 """
