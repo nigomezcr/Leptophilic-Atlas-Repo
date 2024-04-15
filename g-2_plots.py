@@ -96,13 +96,13 @@ def plot_Constraints():
     CCFRColor = ps.MainColor1
     plt.plot(CCFR_x,CCFR_y,'-',color=CCFRColor, alpha=ps.RegionAlpha)
     plt.fill_between(CCFR_x, CCFR_y, 1e-1, color=CCFRColor,alpha=ps.RegionAlpha)
-    plt.text(1e-2,3e-2, 'CCFR', fontsize=12, color=CCFRColor)
+    plt.text(1.5e-2,3e-2, 'CCFR', fontsize=12, color=CCFRColor)
 
     #  BaBar
     BaBarColor = ps.Gray1
     plt.fill_between(Babar_x, Babar_y, 1e-1, color=BaBarColor, alpha=ps.RegionAlpha)
     plt.loglog(Babar_x,Babar_y, color=BaBarColor, alpha=0.7)
-    plt.text(1, 3e-2, 'BaBar', fontsize=12, color=BaBarColor)
+    plt.text(1.3, 3e-2, 'BaBar', fontsize=12, color=ps.Gray2)
 
     #  Neff
     NeffColor = ps.BackgroundColor2
@@ -112,7 +112,7 @@ def plot_Constraints():
     
 
 
-def plot_Atlas(mass_arr, g_arr, color='k', lsty='solid', label=None):
+def plot_Atlas(mass_arr, g_arr, color='k', lsty='solid', lab=None):
 
     gColor1 = ps.MainColor3
     gColor2 = ps.MainColor2
@@ -123,18 +123,17 @@ def plot_Atlas(mass_arr, g_arr, color='k', lsty='solid', label=None):
     g_sigma2p = [gp(Qmu[0], Delta_amu + 2*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
     g_sigma2m = [gp(Qmu[0], Delta_amu - 2*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
 
-    plt.title(r'$L_{\mu} - L_{\tau}$ model')
     plt.fill_between(mZp, g_sigma2m, g_sigma2p, color=gColor2)
     plt.fill_between(mZp, g_sigma1m, g_sigma1p, color=gColor1)
 
-    line = plt.plot(mass_arr, g_arr, color=color, linestyle=lsty, label=label)
+    line = plt.plot(mass_arr, g_arr, label=lab, color=color, linestyle=lsty)
+#    plt.legend(loc='lower right')
 
-    g_patch = ps.mpatches.Patch(color=gColor1, label=r'$1\sigma ~(L_{\mu} - L_{\tau})$')
-    g_patch2 = ps.mpatches.Patch(color=gColor2, label=r'$2\sigma  ~(L_{\mu} - L_{\tau})$')
-    label_patch = ps.mpatches.Patch(color='k', label=label)
+    g_patch = ps.mpatches.Patch(color=gColor1, label=r'$1\sigma ~(L_{\mu} - L_{{\tau}})$')
+    g_patch2 = ps.mpatches.Patch(color=gColor2, label=r'$2\sigma~(L_{\mu} - L_{{\tau}})$')  
 
 
-    plt.legend(handles=[g_patch, g_patch2, line], loc='lower right')
+    plt.legend(handles=[g_patch, g_patch2], loc='lower right')
     plt.savefig("Plots/g_minus_2-final.svg")
     plt.savefig("Plots/g_minus_2-final.pdf")
 
@@ -153,11 +152,12 @@ lines = ['solid', 'dashed', 'dotted']
 colors = [ps.MainColor1, ps.MainColor2, ps.MainColor3]
 
 plot_Settings()
-#plot_Constraints()
+plot_Constraints()
 #plot_Lmu_minus_Ltau()
 for i in range(1, 4):
-    plot_Atlas(mZp, g_muon[i],  color=ps.MainColor2, lsty=lines[i-1], label='BM{:n}'.format(i+1))
-#    plot_Atlas(mZp, g_electron[i],  color='k', lsty=lines[i-1])
+    plot_Atlas(mZp, g_muon[i],  color=ps.MainColor2, lsty=lines[i-1], lab='BM{:n}'.format(i+1))
+    plot_Atlas(mZp, g_electron[i],  color='k', lsty=lines[i-1])
 
 #PrintContributions()
+
 print('----> Done!')
