@@ -16,7 +16,7 @@ plt.rc('font', size=12)          # controls default text sizes
 
 #Color palette for the thesis
 
-RegionAlpha = 0.5
+RegionAlpha = 0.6
 MainColor1 = (29/255, 36/255, 164/255)
 MainColor2 = (155/255, 8/255, 0/255)
 MainColor3 = (212/255, 58/255, 0)
