@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from scipy.integrate import quad
 import PlotSettings as ps
 
+from matplotlib.lines import Line2D
+
 """
 ////////// Constants and Patameters /////////////////////////////////
 """
@@ -21,7 +23,6 @@ rho = np.array([0, -1/6, -1/2, -1/20])
 
 Qe = rho
 Qmu = np.array([1, 1/2, 1/4, 1])#nu - rho
-
 
 
 
@@ -105,14 +106,14 @@ def plot_Constraints():
     plt.text(1.3, 3e-2, 'BaBar', fontsize=12, color=ps.Gray2)
 
     #  Neff
-    NeffColor = ps.BackgroundColor2
+    NeffColor = ps.Gray2
     plt.fill_between(([1e-3,5.3e-3]),1e-4,1e-1, color=NeffColor, alpha=ps.RegionAlpha)
-    plt.text(1.4e-3 , 3e-2, r'$\Delta N_{eff}$', fontsize= 12,color=(155/255, 8/255, 0/255))
+    plt.text(1.4e-3 , 3e-2, r'$\Delta N_{eff}$', fontsize= 12,color=ps.Gray2)
 
     
 
 
-def plot_Atlas(mass_arr, g_arr, color='k', lsty='solid', lab=None):
+def plot_Atlas():
 
     gColor1 = ps.MainColor3
     gColor2 = ps.MainColor2
@@ -126,38 +127,41 @@ def plot_Atlas(mass_arr, g_arr, color='k', lsty='solid', lab=None):
     plt.fill_between(mZp, g_sigma2m, g_sigma2p, color=gColor2)
     plt.fill_between(mZp, g_sigma1m, g_sigma1p, color=gColor1)
 
-    line = plt.plot(mass_arr, g_arr, label=lab, color=color, linestyle=lsty)
-#    plt.legend(loc='lower right')
+    # Plot the other models
+    lines = ['solid', 'dashed', 'dotted']
+    colors = [ps.MainColor1, ps.MainColor2, ps.MainColor3]
+    
+
+
+    custom_lines = [Line2D([0], [0]),
+                    Line2D([0], [0]),
+                    Line2D([0], [0])]
+
+
+    for i in range(1, 4):
+        custom_lines[i-1] = Line2D([0], [0], color='k', lw=3, linestyle=lines[i-1], label='BM{:n}'.format(i+1))
+        plt.loglog(mZp, g_muon[i],  color=ps.MainColor2, linestyle=lines[i-1], label='BM{:n}'.format(i+1))
+        plt.loglog(mZp, g_electron[i],  color='k', linestyle=lines[i-1], label='BM{:n}'.format(i+1))
+
 
     g_patch = ps.mpatches.Patch(color=gColor1, label=r'$1\sigma ~(L_{\mu} - L_{{\tau}})$')
     g_patch2 = ps.mpatches.Patch(color=gColor2, label=r'$2\sigma~(L_{\mu} - L_{{\tau}})$')  
+ 
 
 
-    plt.legend(handles=[g_patch, g_patch2], loc='lower right')
+    plt.legend(handles=[custom_lines[0], custom_lines[1], custom_lines[2], g_patch, g_patch2], loc='lower right') 
+
     plt.savefig("Plots/g_minus_2-final.svg")
     plt.savefig("Plots/g_minus_2-final.pdf")
 
-
-def PrintContributions():
-    print("The Contribution for the charged fermions anomalous magnetic moment:\n")
-    print("$(g-2)_{e}$=\t", gp(Qe[2], 0, 10, me))
-    print("$(g-2)_{\mu}$=\t",  gp(Qmu[2], 0, 10, mm))
-    #print("$(g-2)_{\tau}$=\t",  gp(Qtau, 0, 10, mtau))
 
 """
 /////////// Generate Plots ///////////////////////////////////
 """
 
-lines = ['solid', 'dashed', 'dotted']
-colors = [ps.MainColor1, ps.MainColor2, ps.MainColor3]
 
 plot_Settings()
 plot_Constraints()
-#plot_Lmu_minus_Ltau()
-for i in range(1, 4):
-    plot_Atlas(mZp, g_muon[i],  color=ps.MainColor2, lsty=lines[i-1], lab='BM{:n}'.format(i+1))
-    plot_Atlas(mZp, g_electron[i],  color='k', lsty=lines[i-1])
+plot_Atlas()
 
 #PrintContributions()
-
-print('----> Done!')
