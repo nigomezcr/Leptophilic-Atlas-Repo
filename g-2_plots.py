@@ -94,7 +94,7 @@ def plot_Constraints():
     #plt.text(1e-2,5e-3, 'Borexino', fontsize=12, color=BorexinoColor)
 
     # CCFR
-    CCFRColor = ps.MainColor1
+    CCFRColor = ps.MainColor2
     plt.plot(CCFR_x,CCFR_y,'-',color=CCFRColor, alpha=ps.RegionAlpha)
     plt.fill_between(CCFR_x, CCFR_y, 1e-1, color=CCFRColor,alpha=ps.RegionAlpha)
     plt.text(1.5e-2,3e-2, 'CCFR', fontsize=12, color=CCFRColor)
@@ -108,15 +108,15 @@ def plot_Constraints():
     #  Neff
     NeffColor = ps.Gray2
     plt.fill_between(([1e-3,5.3e-3]),1e-4,1e-1, color=NeffColor, alpha=ps.RegionAlpha)
-    plt.text(1.4e-3 , 3e-2, r'$\Delta N_{eff}$', fontsize= 12,color=ps.Gray2)
+    plt.text(1.4e-3 , 3e-2, r'$\Delta N_{eff}$', fontsize= 12,color=ps.Gray1)
 
     
 
 
 def plot_Atlas():
 
-    gColor1 = ps.MainColor3
-    gColor2 = ps.MainColor2
+    gColor1 = ps.MainColor1
+    gColor2 = ps.BackgroundColor1
 
     #Fill g-2 region for Lmu - Ltau, left plot
     g_sigma1p = [gp(Qmu[0], Delta_amu + 1*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
@@ -129,7 +129,7 @@ def plot_Atlas():
 
     # Plot the other models
     lines = ['solid', 'dashed', 'dotted']
-    colors = [ps.MainColor1, ps.MainColor2, ps.MainColor3]
+
     
 
 
