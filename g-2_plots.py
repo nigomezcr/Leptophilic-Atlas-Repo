@@ -115,8 +115,8 @@ def plot_Constraints():
 
 def plot_Atlas():
 
-    gColor1 = ps.MainColor1
-    gColor2 = ps.BackgroundColor1
+    gColor2 = ps.MainColor1
+    gColor1 = ps.BackgroundColor1
 
     #Fill g-2 region for Lmu - Ltau, left plot
     g_sigma1p = [gp(Qmu[0], Delta_amu + 1*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
@@ -140,7 +140,7 @@ def plot_Atlas():
 
     for i in range(1, 4):
         custom_lines[i-1] = Line2D([0], [0], color='k', lw=3, linestyle=lines[i-1], label='BM{:n}'.format(i+1))
-        plt.loglog(mZp, g_muon[i],  color=ps.MainColor2, linestyle=lines[i-1], label='BM{:n}'.format(i+1))
+        plt.loglog(mZp, g_muon[i],  color=gColor1, linestyle=lines[i-1], label='BM{:n}'.format(i+1))
         plt.loglog(mZp, g_electron[i],  color='k', linestyle=lines[i-1], label='BM{:n}'.format(i+1))
 
 
