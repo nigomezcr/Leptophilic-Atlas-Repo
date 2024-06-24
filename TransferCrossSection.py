@@ -3,22 +3,27 @@ import matplotlib.pyplot as plt
 from PlotSettings import MainColor1, MainColor2, MainColor3, BackgroundColor1, BackgroundColor2, BackgroundColor3, Gray1
 
 # Arrays
-mDM_array = np.logspace(-1, 2, 100)
+mDM_array = np.logspace(0, 2, 100)
 v0 = (10, 1000)
 
-alphaDM, alphaDM2, alphaDM3 = 0.005, 0.01, 0.03
-mZp, mZp2, mZp3 = 9.8, 20, 15
-mDM, mDM2, mDM3 = 6.9, 165, 8
+alphaDM, alphaDM2, alphaDM3 = 0.01, 0.01, 0.03
+mZp, mZp2, mZp3 = 19.9, 25.1, 15
+mDM, mDM2, mDM3 = 161.5, 209.6, 8
 
-
+######## Functions ############
 def sigmatransfer(V, mphi, mchi, alphax):
     w = 300 * (mphi / 10) * (10 / mchi)
     st = (275.73) * (alphax / 1e-2) ** 2 * (mchi / 10) * (10 / mphi) ** (4)
     sv = 2 * st * (w ** 4 / V ** 4) * (2 * np.log(1.0 + V ** 2 / (2 * w ** 2)) - np.log(1.0 + V ** 2 / (w ** 2)))
     return sv
 
-###### For the Plots ######
+def sigmaviscosity(V, mphi, mchi, alphax):
+    w  = 300*(mphi/(10))*(10/(mchi))
+    st = (275.73)*(alphax/0.01)**2*(mchi/10.0)*(10.0/(mphi))**(4)
+    sv = 3*st*(w**6/(V**6))*( (2+V**2/(w**2))*np.log(1+V**2/(w**2))-2*V**2/w**2)
+    return sv
 
+###### For the Plots ######
 line_colors = (MainColor1, MainColor3)
 line_styles = ('solid', 'dashed', 'dotted')
 
@@ -50,27 +55,26 @@ ax.set_yscale('log')
 ax.set_xlim([mDM_array[0], mDM_array[-1]])
 ax.set_ylim(1e-2, 200)
 
-Dwarf1 = [sigmatransfer(v0[0], mZp, m, alphaDM) for m in mDM_array]
-Dwarf2 = [sigmatransfer(v0[0], mZp2, m, alphaDM2) for m in mDM_array]
-Dwarf3 = [sigmatransfer(v0[0], mZp3, m, alphaDM3) for m in mDM_array]
-
-Cluster1 = [sigmatransfer(v0[1], mZp, m, alphaDM) for m in mDM_array]
-Cluster2 = [sigmatransfer(v0[1], mZp2, m, alphaDM2) for m in mDM_array]
-Cluster3 = [sigmatransfer(v0[1], mZp3, m, alphaDM3) for m in mDM_array]
+Dwarfv = [sigmaviscosity(v0[0], mZp, m, alphaDM) for m in mDM_array]
+Dwarft = [sigmatransfer(v0[0], mZp2, m, alphaDM2) for m in mDM_array]
 
 
-DwPlot1 = ax.plot(mDM_array, Dwarf1, linestyle='solid', color=MainColor1, label='DM1')
-DwPlot2 = ax.plot(mDM_array, Dwarf2, linestyle='dashed', color=MainColor1, label='DM2')
-DwPlot3 = ax.plot(mDM_array, Dwarf3, linestyle='dotted', color=MainColor1, label='DM3')
+Clusterv = [sigmaviscosity(v0[1], mZp, m, alphaDM) for m in mDM_array]
+Clustert = [sigmatransfer(v0[1], mZp2, m, alphaDM2) for m in mDM_array]
 
-ClPlot1 = ax.plot(mDM_array, Cluster1, linestyle='solid',  color=MainColor2, label='DM1')
-ClPlot2 = ax.plot(mDM_array, Cluster2, linestyle='dashed', color=MainColor2, label='DM2')
-ClPlot3 = ax.plot(mDM_array, Cluster3, linestyle='dotted', color=MainColor2, label='DM3')
 
-first_legend = ax.legend(handles=[DwPlot1[0], DwPlot2[0], DwPlot3[0]], loc=4, title='Models')
+
+DwPlotv = ax.plot(mDM_array, Dwarfv, linestyle='solid', color=MainColor1)
+DwPlott = ax.plot(mDM_array, Dwarft, linestyle='dashed', color=MainColor1)
+
+ClPlotv = ax.plot(mDM_array, Clusterv, linestyle='solid',  color=MainColor2)
+ClPlott = ax.plot(mDM_array, Clustert, linestyle='dashed', color=MainColor2)
+
+
+first_legend = ax.legend(handles=[DwPlotv[0], DwPlott[0]], labels=['Viscosity', 'Transfer'], loc=4, title='Models')
 ax.add_artist(first_legend)
 
-ax.legend(handles=[DwPlot1[0], ClPlot1[0]], loc=2, title='Velocity')
+ax.legend(handles=[DwPlott[0], ClPlott[0]], labels=[r'$v = 10~km/s $', r'$v=1000~km/s$'], loc=2, title='Velocity')
 
 
 
