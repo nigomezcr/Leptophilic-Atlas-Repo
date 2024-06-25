@@ -39,7 +39,7 @@ def colorFader(c1,c2,mix=0): #fade (linear interpolate) from color c1 (at mix=0)
     return (1-mix)*c1 + mix*c2
 
 n = 500
-c1 = BackgroundColor2  # yellow
+c1 = MainColor2  # yellow
 c2 = (1, 1, 1)  # white
 y_values = np.logspace(-1.6, 0, n+1)  # Generate logarithmically spaced values
 
@@ -72,11 +72,11 @@ Cluster_chi2 = [sigmatransfer(v0[1], mZp3, m, alphaDM3) for m in mDM_array]
 
 
 
-DwPlotv = ax.plot(mDM_array, Dwarfv, linestyle='solid', color=MainColor1)
-DwPlott = ax.plot(mDM_array, Dwarft, linestyle='dashed', color=MainColor1)
-#DwPlot_chi2 = ax.plot(mDM_array, Dwarf_chi2, linestyle='dashed', color=BackgroundColor3)
+DwPlotv = ax.plot(mDM_array, Dwarfv, linestyle='solid', color=BackgroundColor3)
+DwPlott = ax.plot(mDM_array, Dwarft, linestyle='solid', color=MainColor1)
 
-ClPlotv = ax.plot(mDM_array, Clusterv, linestyle='solid',  color=MainColor2)
+
+ClPlotv = ax.plot(mDM_array, Clusterv, linestyle='dashed',  color=BackgroundColor3)
 ClPlott = ax.plot(mDM_array, Clustert, linestyle='dashed', color=MainColor2)
 
 
