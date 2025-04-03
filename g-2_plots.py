@@ -139,13 +139,13 @@ def plot_Atlas():
 
 
     for i in range(1, 4):
-        custom_lines[i-1] = Line2D([0], [0], color='k', lw=3, linestyle=lines[i-1], label='BM{:n}'.format(i+1))
-        plt.loglog(mZp, g_muon[i],  color=gColor1, linestyle=lines[i-1], label='BM{:n}'.format(i+1))
-        plt.loglog(mZp, g_electron[i],  color='k', linestyle=lines[i-1], label='BM{:n}'.format(i+1))
+        custom_lines[i-1] = Line2D([0], [0], color='k', lw=3, linestyle=lines[i-1], label='$(g-2)_e \; BM{:n}$'.format(i+1))
+        plt.loglog(mZp, g_muon[i],  color=gColor1, linestyle=lines[i-1], label=r'$(g-2)_e \; BM{:n}$'.format(i+1))
+        plt.loglog(mZp, g_electron[i],  color='k', linestyle=lines[i-1], label=r'$(g-2)_e \; BM{:n}$'.format(i+1))
 
 
     g_patch = ps.mpatches.Patch(color=gColor1, label=r'$1\sigma ~(L_{\mu} - L_{{\tau}})$')
-    g_patch2 = ps.mpatches.Patch(color=gColor2, label=r'$2\sigma~(L_{\mu} - L_{{\tau}})$')  
+    g_patch2 = ps.mpatches.Patch(color=gColor2, label=r'$2\sigma~(L_{\mu} - L_{{\tau}})$') 
  
 
 
@@ -156,7 +156,7 @@ def plot_Atlas():
 
 
 """
-/////////// Generate Plots ///////////////////////////////////
+/////////// Generate Plots ///////////////////////////
 """
 
 
