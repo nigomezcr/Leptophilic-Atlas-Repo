@@ -204,3 +204,79 @@ def averagedsigma(kappa0, beta0, mode = 'T', sign = 'attractive'):
     print('Mode not recognized in function averagedsigma()')
     exit()
 
+
+
+# parameters
+
+def kappa(alp,mdm,mpi,v):
+    return mdm*v/(2*mpi*c)
+
+def beta(alp,mdm,mpi,v):
+    return 2*alp*mpi*c**2/(mdm*v**2)
+
+
+def sigmaTa(alp,mdm,mpi,v):
+    return sigma_combined(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'T', sign = 'attractive')*fc*pi/(mpi**2*mdm)
+
+def sigmaTr(alp,mdm,mpi,v):
+    return sigma_combined(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'T', sign = 'repulsive')*fc*pi/(mpi**2*mdm)
+
+
+
+def sigmaT(alp,mdm,mpi,v):
+    return (sigmaTa(alp,mdm,mpi,v)+sigmaTr(alp,mdm,mpi,v))/2
+
+
+
+def sigmaFa(alp,mdm,mpi,v):
+    return sigma_combined(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'fermion', sign = 'attractive')*fc*pi/(mpi**2*mdm)
+
+def sigmaFr(alp,mdm,mpi,v):
+    return sigma_combined(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'fermion', sign = 'repulsive')*fc*pi/(mpi**2*mdm)
+
+def sigmaF(alp,mdm,mpi,v):
+    return (sigmaFa(alp,mdm,mpi,v)+sigmaFr(alp,mdm,mpi,v))/2
+
+
+def sigmaVa(alp,mdm,mpi,v):
+    return sigma_combined(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'V', sign = 'attractive')*fc*pi/(mpi**2*mdm)
+
+
+def sigmaVr(alp,mdm,mpi,v):
+    return sigma_combined(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'V', sign = 'repulsive')*fc*pi/(mpi**2*mdm)
+
+def sigmaV(alp,mdm,mpi,v):
+    return (sigmaVa(alp,mdm,mpi,v)+sigmaVr(alp,mdm,mpi,v))/2
+    
+### average
+
+def asigmaTa(alp,mdm,mpi,v):
+    return averagedsigma(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'T', sign = 'attractive')*fc*pi/(mpi**2*mdm)
+
+def asigmaTr(alp,mdm,mpi,v):
+    return averagedsigma(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'T', sign = 'repulsive')*fc*pi/(mpi**2*mdm)
+
+def asigmaT(alp,mdm,mpi,v):
+    return (asigmaTa(alp,mdm,mpi,v)+asigmaTr(alp,mdm,mpi,v))/2
+
+def asigmaVa(alp,mdm,mpi,v):
+    return averagedsigma(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'V', sign = 'attractive')*fc*pi/(mpi**2*mdm)
+
+
+def asigmaVr(alp,mdm,mpi,v):
+    return averagedsigma(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'V', sign = 'repulsive')*fc*pi/(mpi**2*mdm)
+
+def asigmaV(alp,mdm,mpi,v):
+    return (asigmaVa(alp,mdm,mpi,v)+asigmaVr(alp,mdm,mpi,v))/2
+    
+
+def asigmaFa(alp,mdm,mpi,v):
+    return averagedsigma(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'fermion', sign = 'attractive')*fc*pi/(mpi**2*mdm)
+
+
+def asigmaFr(alp,mdm,mpi,v):
+    return averagedsigma(kappa(alp,mdm,mpi,v),beta(alp,mdm,mpi,v),mode = 'fermion', sign = 'repulsive')*fc*pi/(mpi**2*mdm)
+
+def asigmaF(alp,mdm,mpi,v):
+    return (asigmaFa(alp,mdm,mpi,v)+asigmaFr(alp,mdm,mpi,v))/2
+    
