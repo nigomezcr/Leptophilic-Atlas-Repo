@@ -48,6 +48,7 @@ import numpy as np
 from numpy import sqrt, pi, sin, cos, log, exp, euler_gamma
 from scipy.special import kn, gamma, loggamma
 from scipy.interpolate import RectBivariateSpline
+from Constants import c
 
 approximate_eta = False
 
@@ -106,7 +107,7 @@ averagedsigmainterdict = {}
 for mode in modes:
   for sign in signs:
 
-    outputname_data = 'sigma'+mode+'list_'+sign+'.txt'
+    outputname_data = 'CLASSICS-Files/sigma'+mode+'list_'+sign+'.txt'
 
     averagedsigmagrid = np.loadtxt(outputname_data)
     averagedsigmaarray = np.array(averagedsigmagrid)[:,2].reshape((len(kappa0grid),len(beta0grid))) + 1e-100
