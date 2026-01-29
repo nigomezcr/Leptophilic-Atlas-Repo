@@ -12,8 +12,8 @@ from matplotlib.lines import Line2D
 # Constants
 mm = .105 # muon mass in GeV
 me = 0.000511 # electron mass in GeV
-Delta_amu = 248 # discrepancy in a_mu 10^{-11} units
-sigma_amu = 49
+Delta_amu = 38 # discrepancy in a_mu 10^{-11} units
+sigma_amu = 63
 Delta_ae = 0.087 # discrepancy in a_e in 10^{-11} units
 sigma_ae = 0.036
 
@@ -119,13 +119,12 @@ def plot_Atlas():
     gColor1 = ps.BackgroundColor1
 
     #Fill g-2 region for Lmu - Ltau, left plot
-    g_sigma1p = [gp(Qmu[0], Delta_amu + 1*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
-    g_sigma1m = [gp(Qmu[0], Delta_amu - 1*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
-    g_sigma2p = [gp(Qmu[0], Delta_amu + 2*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
-    g_sigma2m = [gp(Qmu[0], Delta_amu - 2*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
+    g_sigma1p = [gp(Qmu[0], Delta_amu , M, mm)*10**(-5.5) for M in mZp ]
+    #g_sigma1m = [gp(Qmu[0], Delta_amu - 1*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
+    
 
-    plt.fill_between(mZp, g_sigma2m, g_sigma2p, color=gColor2)
-    plt.fill_between(mZp, g_sigma1m, g_sigma1p, color=gColor1)
+
+    #plt.fill_between(mZp, g_sigma1m, g_sigma1p, color=gColor1)
 
     # Plot the other models
     lines = ['solid', 'dashed', 'dotted']
@@ -145,7 +144,7 @@ def plot_Atlas():
 
 
     g_patch = ps.mpatches.Patch(color=gColor1, label=r'$1\sigma ~(L_{\mu} - L_{{\tau}})$')
-    g_patch2 = ps.mpatches.Patch(color=gColor2, label=r'$2\sigma~(L_{\mu} - L_{{\tau}})$') 
+    
  
 
 
