@@ -110,7 +110,10 @@ def plot_Constraints():
     plt.fill_between(([1e-3,5.3e-3]),1e-4,1e-1, color=NeffColor, alpha=ps.RegionAlpha)
     plt.text(1.4e-3 , 3e-2, r'$\Delta N_{eff}$', fontsize= 12,color=ps.Gray1)
 
-    
+
+    plt.savefig("Plots/g_minus_2-final.svg")
+    plt.savefig("Plots/g_minus_2-final.pdf")
+
 
 
 def plot_Atlas():
@@ -120,8 +123,7 @@ def plot_Atlas():
 
     #Fill g-2 region for Lmu - Ltau, left plot
     g_sigma1p = [gp(Qmu[0], Delta_amu , M, mm)*10**(-5.5) for M in mZp ]
-    #g_sigma1m = [gp(Qmu[0], Delta_amu - 1*sigma_amu, M, mm)*10**(-5.5) for M in mZp ]
-    
+
 
 
     #plt.fill_between(mZp, g_sigma1m, g_sigma1p, color=gColor1)
@@ -129,7 +131,7 @@ def plot_Atlas():
     # Plot the other models
     lines = ['solid', 'dashed', 'dotted']
 
-    
+
 
 
     custom_lines = [Line2D([0], [0]),
@@ -142,16 +144,12 @@ def plot_Atlas():
         plt.loglog(mZp, g_muon[i],  color=gColor1, linestyle=lines[i-1], label=r'$(g-2)_e \; BM{:n}$'.format(i+1))
         plt.loglog(mZp, g_electron[i],  color='k', linestyle=lines[i-1], label=r'$(g-2)_e \; BM{:n}$'.format(i+1))
 
+    plt.fill_between(mZp , g_muon[2], 1e-1, color=ps.BackgroundColor1, alpha=0.5)
 
-    g_patch = ps.mpatches.Patch(color=gColor1, label=r'$1\sigma ~(L_{\mu} - L_{{\tau}})$')
-    
- 
+    g_patch = ps.mpatches.Patch(color=gColor1, label=r'$(g-2)_{\mu}$')
 
+    plt.legend(handles=[custom_lines[0], custom_lines[1], custom_lines[2], g_patch], loc='lower right')
 
-    plt.legend(handles=[custom_lines[0], custom_lines[1], custom_lines[2], g_patch, g_patch2], loc='lower right') 
-
-    plt.savefig("Plots/g_minus_2-final.svg")
-    plt.savefig("Plots/g_minus_2-final.pdf")
 
 
 """
@@ -160,7 +158,9 @@ def plot_Atlas():
 
 
 plot_Settings()
-plot_Constraints()
+
 plot_Atlas()
+plot_Constraints()
+
 
 #PrintContributions()
